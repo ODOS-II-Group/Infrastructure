@@ -17,10 +17,20 @@ def runGitPush(git_branch){
   """
 	println "Pushed $git_branch to repository"
 }
-void slack(String msg){
+
+def slack(String msg){
   echo msg
   slackSend botUser: true, message: "${JOB_NAME}#${BUILD_ID}: ${msg}", tokenCredentialId: 'slack'
 
+}
+
+def jHipsterBuild(){
+  sh './gradlew bootRepackage -Pprod'
+}
+
+def sonarScan(break_build){
+  //TODO: build breaking
+  sh './gradlew sonarqube'
 }
 
 def buildContainer(String containerName){
