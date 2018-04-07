@@ -13,7 +13,7 @@ def runGitPush(git_branch){
   sh returnStdout: true, script: """
     git tag -a -f -m "Jenkins Build #${BUILD_ID}" jenkins-merge-${BUILD_ID}
     git --version
-    git push origin ${git_branch}
+    git push origin HEAD:${git_branch}
   """
 	println "Pushed $git_branch to repository"
 }
@@ -31,6 +31,11 @@ def buildContainer(String containerName){
         docker tag docker.lassiterdynamics.com:5000/${containerName}:latest docker.lassiterdynamics.com:5000/${containerName}:${BUILD_ID}
       """
   }
+}
+
+def pushContainer(String containerName){
+  sh "docker push docker.lassiterdynamics.com:5000/${containerName}:${BUILD_ID}"
+  sh "docker push docker.lassiterdynamics.com:5000/${containerName}:latest"
 }
 
 def twistlock(String repo,String image,String tag){
