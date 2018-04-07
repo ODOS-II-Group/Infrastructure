@@ -1,4 +1,4 @@
-Class Common {}
+class Common {}
 
 def runGitMergeFromBranch(String git_branch, String git_base_branch, String git_repo_url){
  checkout changelog: false, poll: false, scm: [
