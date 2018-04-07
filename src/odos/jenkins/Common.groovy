@@ -1,19 +1,22 @@
 
-def runGitMergeFromBranch(String git_branch, String git_base_branch, String git_repo_url){
- checkout changelog: false, poll: false, scm: [
-     $class: 'GitSCM',
-     branches: [[name: git_base_branch]],
-     doGenerateSubmoduleConfigurations: false,
-     extensions: [[
-         $class: 'PreBuildMerge',
-         options: [fastForwardMode: 'FF', mergeRemote: 'origin', mergeStrategy: 'recursive', mergeTarget: git_branch]
-     ]],
-     submoduleCfg: [],
-     userRemoteConfigs: [[credentialsId: 'jenkins-ssh', url: git_repo_url]]
- ]
- println "Locally merged $git_base_branch to $git_branch"
+def runGitMerge(String git_branch, String base_branch, String git_repo_url){
+  sh returnStdout: true, script: """
+    git checkout ${git_branch}
+    git pull origin ${base_branch}
+ """
+ println "Locally merged $base_branch to $git_branch"
 }
 
+/****PUSHES A BRANCH UP****/
+def runGitPush(git_branch){
+	println "trying to push branch ... $git_branch to $git_repo_url"
+  sh returnStdout: true, script: """
+    git tag -a -f -m "Jenkins Build #${BUILD_ID}" jenkins-merge-${BUILD_ID}
+    git --version
+    git push origin ${git_branch}
+  """
+	println "Pushed $git_branch to repository"
+}
 void slack(String msg){
   echo msg
   slackSend botUser: true, message: "${JOB_NAME}#${BUILD_ID}: ${msg}", tokenCredentialId: 'slack'
