@@ -1,5 +1,5 @@
 
-def runGitMerge(String git_branch, String base_branch, String git_repo_url){
+def runGitMerge(String git_branch, String base_branch){
   sh returnStdout: true, script: """
     git checkout ${git_branch}
     git pull origin ${base_branch}
@@ -9,7 +9,7 @@ def runGitMerge(String git_branch, String base_branch, String git_repo_url){
 
 /****PUSHES A BRANCH UP****/
 def runGitPush(git_branch){
-	println "trying to push branch ... $git_branch to $git_repo_url"
+	println "trying to push branch ... $git_branch to origin"
   sh returnStdout: true, script: """
     git tag -a -f -m "Jenkins Build #${BUILD_ID}" jenkins-merge-${BUILD_ID}
     git --version
