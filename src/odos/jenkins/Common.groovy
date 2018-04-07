@@ -1,4 +1,6 @@
-#!groovy
+
+class Common{}
+
 def GIT_URL=scm.getUserRemoteConfigs()[0].getUrl();
 
 def runGitMergeFromBranch(git_branch, git_base_branch, git_repo_url){
@@ -16,7 +18,7 @@ def runGitMergeFromBranch(git_branch, git_base_branch, git_repo_url){
    println "Locally merged $git_base_branch to $git_branch"
 }
 
-def slack(msg){
+void slack(msg){
   echo msg
   slackSend botUser: true, message: "${JOB_NAME}#${BUILD_ID}: ${msg}", tokenCredentialId: 'slack'
 
@@ -73,3 +75,5 @@ def deployToOpenShift(environment,image,tag){
     """
   }
 }
+
+return this
