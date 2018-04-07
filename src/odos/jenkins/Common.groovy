@@ -1,4 +1,4 @@
-
+Class Common {}
 
 def runGitMergeFromBranch(String git_branch, String git_base_branch, String git_repo_url){
  checkout changelog: false, poll: false, scm: [
@@ -72,3 +72,5 @@ def deployToOpenShift(String environment, String image, String tag){
     """
   }
 }
+
+return this
