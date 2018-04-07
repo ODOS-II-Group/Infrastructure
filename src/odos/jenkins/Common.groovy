@@ -28,7 +28,7 @@ def jHipsterBuild(){
   sh './gradlew bootRepackage -Pprod'
 }
 
-def sonarScan(break_build){
+def sonarScan(Boolean break_build=false){
   //TODO: build breaking
   sh './gradlew sonarqube'
 }
