@@ -1,6 +1,4 @@
-def GIT_URL(){
-  scm.getUserRemoteConfigs()[0].getUrl()
-}
+
 
 def runGitMergeFromBranch(git_branch, git_base_branch, git_repo_url){
  checkout changelog: false, poll: false, scm: [
