@@ -2,7 +2,8 @@
 def runGitMerge(String git_branch, String base_branch){
   sh returnStdout: true, script: """
     git checkout ${git_branch}
-    git pull origin ${base_branch}
+    git pull -ff origin ${base_branch}
+    git pull origin ${git_branch}
  """
  println "Locally merged $base_branch to $git_branch"
 }
@@ -88,6 +89,43 @@ def deployToOpenShift(String environment, String image, String tag){
       --confirm
     """
   }
+}
+
+def fortify(srcDir,reportDir, appID=0){
+  fpr="${reportDir}/${JOB_BASE_NAME}-${BUILD_NUMBER}.fpr".replaceAll("[^a-zA-Z0-9-_\\./]")
+  pdf="${reportDir}/${JOB_BASE_NAME}-${BUILD_NUMBER}.pdf".replaceAll("[^a-zA-Z0-9-_\\./]")
+  if( appID ) {
+    withCredentials([string(credentialsId:'fortifyDLToken',variable'FORTIFY_DL_TOKEN')]){
+      sh """
+        mkdir -p ${reportDir}
+        fortifyclient downloadFPR \
+          -url https://security.lassiterdynamics.com/ \
+          -authtoken ${FORTIFY_DL_TOKEN} \
+          -applicationVersionID ${appID} \
+          -file ${fpr}
+      """
+    }
+  }
+  sh """
+    sourceanalyzer -clean
+
+    sourceanalyzer \
+      -Xmx7837M \
+      -Xms400M \
+      -Xss24M \
+      -build-label ${JOB_BASE_NAME}-${BUILD_NUMBER} \
+      -scan \
+      -f ${fpr} \
+      -logfile ${reportDir}/FortifyScan.log \
+      ${srcDIr}
+
+    ReportGenerator \
+      -template PHRI.xml \
+      -format pdf \
+      -source ${fpr} \
+      -f ${pdf}
+
+  """
 }
 
 return this
