@@ -95,7 +95,7 @@ def fortify(srcDir,reportDir, appID=0){
   fpr="${reportDir}/${JOB_BASE_NAME}-${BUILD_NUMBER}.fpr".replaceAll("[^a-zA-Z0-9-_\\./]")
   pdf="${reportDir}/${JOB_BASE_NAME}-${BUILD_NUMBER}.pdf".replaceAll("[^a-zA-Z0-9-_\\./]")
   if( appID ) {
-    withCredentials([string(credentialsId:'fortifyDLToken',variable'FORTIFY_DL_TOKEN')]){
+    withCredentials([string(credentialsId:'fortifyDLToken',variable:'FORTIFY_DL_TOKEN')]){
       sh """
         mkdir -p ${reportDir}
         fortifyclient downloadFPR \
