@@ -50,32 +50,35 @@ def pushContainer(String containerName){
 }
 
 def twistlock(String repo,String image,String tag){
-  twistlockScan(
-    ca: '',
-    cert: '',
-    compliancePolicy: 'high',
-    dockerAddress: 'unix:///var/run/docker.sock',
-    gracePeriodDays: 0,
-    ignoreImageBuildTime: false,
-    repository: repo,
-    image: "${image}:${tag}",
-    tag: tag,
-    key: '',
-    logLevel: 'true',
-    policy: 'high',
-    requirePackageUpdate: true,
-    timeout: 10
-  )
-
-  twistlockPublish(
-    ca: '',
-    cert: '',
-    dockerAddress: 'unix:///var/run/docker.sock',
-    image: "${repo}/${image}:${tag}",
-    key: '',
-    logLevel: 'true',
-    timeout: 10
-  )
+  try{
+    twistlockScan(
+      ca: '',
+      cert: '',
+      compliancePolicy: 'high',
+      dockerAddress: 'unix:///var/run/docker.sock',
+      gracePeriodDays: 0,
+      ignoreImageBuildTime: false,
+      repository: repo,
+      image: "${image}:${tag}",
+      tag: tag,
+      key: '',
+      logLevel: 'true',
+      policy: 'high',
+      requirePackageUpdate: true,
+      timeout: 10
+    )
+  }
+  finally {
+    twistlockPublish(
+      ca: '',
+      cert: '',
+      dockerAddress: 'unix:///var/run/docker.sock',
+      image: "${repo}/${image}:${tag}",
+      key: '',
+      logLevel: 'true',
+      timeout: 10
+    )
+  }
 }
 
 def deployToOpenShift(String environment, String image, String tag){
