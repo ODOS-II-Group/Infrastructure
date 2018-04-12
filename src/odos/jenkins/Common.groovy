@@ -63,7 +63,7 @@ def twistlock(String repo,String image,String tag){
       tag: tag,
       key: '',
       logLevel: 'true',
-      policy: 'high',
+      policy: 'warn',
       requirePackageUpdate: true,
       timeout: 10
     )
@@ -102,7 +102,7 @@ def fortify(srcDir,reportDir, appID=0){
       sh """
         mkdir -p ${reportDir}
         fortifyclient downloadFPR \
-          -url https://security.lassiterdynamics.com/ \
+          -url https://security.lassiterdynamics.com:8080/ \
           -authtoken ${FORTIFY_DL_TOKEN} \
           -applicationVersionID ${appID} \
           -file ${fpr}
