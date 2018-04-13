@@ -110,6 +110,7 @@ def fortify(srcDir,reportDir, appID=0){
     }
   }
   sh """
+    export PATH=$PATH:/opt/fortify_sca_17.20/bin/
     sourceanalyzer -clean
 
     sourceanalyzer \
