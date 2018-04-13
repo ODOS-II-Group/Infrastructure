@@ -121,7 +121,7 @@ def fortify(srcDir,reportDir, appID=0){
       ${srcDir}
 
     ReportGenerator \
-      -template ScanReport.xml} \
+      -template ScanReport.xml \
       -format pdf \
       -source ${fpr} \
       -f ${pdf}
