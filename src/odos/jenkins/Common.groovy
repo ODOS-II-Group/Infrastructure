@@ -1,5 +1,3 @@
-def FORTIFY_URL='http://security.lassiterdynamics.com:8080/ssc'
-
 def runGitMerge(String git_branch, String base_branch){
   sh returnStdout: true, script: """
     git checkout ${git_branch}
