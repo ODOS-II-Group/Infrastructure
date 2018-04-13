@@ -96,8 +96,8 @@ def deployToOpenShift(String environment, String image, String tag){
 }
 
 def fortify(srcDir,reportDir, appID=0){
-  fpr="${reportDir}/${JOB_BASE_NAME}-${BUILD_NUMBER}.fpr".replaceAll("[^a-zA-Z0-9-_\\./]")
-  pdf="${reportDir}/${JOB_BASE_NAME}-${BUILD_NUMBER}.pdf".replaceAll("[^a-zA-Z0-9-_\\./]")
+  fpr="${reportDir}/${JOB_BASE_NAME}-${BUILD_NUMBER}.fpr".replaceAll("[^a-zA-Z0-9-_\\./]","_")
+  pdf="${reportDir}/${JOB_BASE_NAME}-${BUILD_NUMBER}.pdf".replaceAll("[^a-zA-Z0-9-_\\./]","_")
   if( appID ) {
     withCredentials([string(credentialsId:'fortifyDLToken',variable:'FORTIFY_DL_TOKEN')]){
       sh """
