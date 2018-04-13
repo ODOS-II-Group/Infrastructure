@@ -105,7 +105,7 @@ def fortify(srcDir,reportDir, appID=0){
           -url ${FORTIFY_URL} \
           -authtoken ${FORTIFY_DL_TOKEN} \
           -applicationVersionID ${appID} \
-          -file ${fpr}
+          -file ${fpr} || true
       """
     }
   }
