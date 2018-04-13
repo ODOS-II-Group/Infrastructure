@@ -1,3 +1,4 @@
+def FORTIFY_URL='http://security.lassiterdynamics.com:8080/ssc'
 
 def runGitMerge(String git_branch, String base_branch){
   sh returnStdout: true, script: """
@@ -100,9 +101,10 @@ def fortify(srcDir,reportDir, appID=0){
   if( appID ) {
     withCredentials([string(credentialsId:'fortifyDLToken',variable:'FORTIFY_DL_TOKEN')]){
       sh """
+        export PATH=$PATH:/opt/fortify_sca_17.20/bin/
         mkdir -p ${reportDir}
         fortifyclient downloadFPR \
-          -url https://security.lassiterdynamics.com:8080/ \
+          -url ${FORTIFY_URL} \
           -authtoken ${FORTIFY_DL_TOKEN} \
           -applicationVersionID ${appID} \
           -file ${fpr}
@@ -113,22 +115,31 @@ def fortify(srcDir,reportDir, appID=0){
     sourceanalyzer -clean
 
     sourceanalyzer \
-      -Xmx7837M \
-      -Xms400M \
-      -Xss24M \
       -build-label ${JOB_BASE_NAME}-${BUILD_NUMBER} \
       -scan \
       -f ${fpr} \
       -logfile ${reportDir}/FortifyScan.log \
-      ${srcDIr}
+      ${srcDir}
 
     ReportGenerator \
-      -template PHRI.xml \
+      -template ScanReport.xml} \
       -format pdf \
       -source ${fpr} \
       -f ${pdf}
-
   """
+
+  if( appID ) {
+    withCredentials([string(credentialsId:'fortifyULToken',variable:'FORTIFY_UL_TOKEN')]){
+      sh """
+        export PATH=$PATH:/opt/fortify_sca_17.20/bin/
+        fortifyclient uploadFPR \
+          -url ${FORTIFY_URL} \
+          -authtoken ${FORTIFY_UL_TOKEN} \
+          -applicationVersionID ${appID} \
+          -file ${fpr}
+      """
+    }
+  }
 }
 
 return this
