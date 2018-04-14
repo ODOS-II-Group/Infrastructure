@@ -25,12 +25,12 @@ def slack(String msg){
 }
 
 def jHipsterBuild(){
-  sh './gradlew bootRepackage -Pprod'
+  sh './gradlew bootRepackage -Pprod --stacktrace'
 }
 
 def sonarScan(Boolean break_build=false){
   //TODO: build breaking
-  sh './gradlew sonarqube'
+  sh './gradlew sonarqube --stacktrace'
 }
 
 def buildContainer(String containerName){
@@ -142,7 +142,7 @@ def fortify(srcDir,reportDir, appID=0){
 }
 
 def runFT( targetURL ){
-  
+
 }
 
 def runPT( targetURL ){
