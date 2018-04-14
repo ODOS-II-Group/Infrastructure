@@ -141,4 +141,12 @@ def fortify(srcDir,reportDir, appID=0){
   }
 }
 
+def runFT( targetURL ){
+  
+}
+
+def runPT( targetURL ){
+
+}
+
 return this
