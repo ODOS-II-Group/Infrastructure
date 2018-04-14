@@ -25,7 +25,7 @@ def slack(String msg){
 }
 
 def jHipsterBuild(){
-  sh './gradlew bootRepackage -Pprod --stacktrace'
+  sh './gradlew clean bootRepackage -Pprod --stacktrace'
 }
 
 def sonarScan(Boolean break_build=false){
