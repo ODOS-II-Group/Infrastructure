@@ -58,7 +58,7 @@ def twistlock(String repo,String image,String tag){
       gracePeriodDays: 0,
       ignoreImageBuildTime: false,
       repository: repo,
-      image: "${image}:${tag}",
+      image: "${repo}/${image}:${tag}",
       tag: tag,
       key: '',
       logLevel: 'true',
