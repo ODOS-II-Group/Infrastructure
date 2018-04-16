@@ -130,7 +130,7 @@ def fortify(srcDir,reportDir, appID=0){
   if( appID ) {
     withCredentials([string(credentialsId:'fortifyULToken',variable:'FORTIFY_UL_TOKEN')]){
       sh """
-        export PATH=$PATH:$SSC_BIN
+        export PATH=$PATH:$FORTIFY_BIN
         fortifyclient uploadFPR \
           -url ${FORTIFY_URL} \
           -authtoken ${FORTIFY_UL_TOKEN} \
