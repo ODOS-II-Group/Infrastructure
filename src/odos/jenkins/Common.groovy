@@ -99,7 +99,7 @@ def fortify(srcDir,reportDir, appID=0){
   if( appID ) {
     withCredentials([string(credentialsId:'fortifyDLToken',variable:'FORTIFY_DL_TOKEN')]){
       sh """
-        export PATH=$PATH:/opt/fortify_sca_17.20/bin/
+        export PATH=$PATH:$FORTIFY_BIN
         mkdir -p ${reportDir}
         fortifyclient downloadFPR \
           -url ${FORTIFY_URL} \
@@ -110,7 +110,7 @@ def fortify(srcDir,reportDir, appID=0){
     }
   }
   sh """
-    export PATH=$PATH:/opt/fortify_sca_17.20/bin/
+    export PATH=$PATH:$FORTIFY_BIN
     sourceanalyzer -clean
 
     sourceanalyzer \
