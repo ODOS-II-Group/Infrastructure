@@ -140,8 +140,8 @@ def fortify(srcDir,reportDir, appID=0){
       """
     }
   }
-  
-  archiveArtifacts allowEmptyArchive: true, artifacts: '${reportDir}/*', fingerprint: true
+
+  archiveArtifacts allowEmptyArchive: true, artifacts: "${reportDir}/*", fingerprint: true
 }
 
 def runFT( targetURL ){
