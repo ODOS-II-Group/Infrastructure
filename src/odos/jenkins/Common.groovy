@@ -34,7 +34,7 @@ def sonarScan(Boolean break_build=false){
 }
 
 def buildContainer(String containerName){
-  withCredentials([usernamePassword(credentialsId: 'odos-password', passwordVariable: 'ODOS_PW', usernameVariable: 'ODOS_USER')]) {
+  withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'ODOS_PW', usernameVariable: 'ODOS_USER')]) {
       sh """
         docker login -u ${ODOS_USER} -p ${ODOS_PW} docker.lassiterdynamics.com:5000
         ./gradlew buildDocker
