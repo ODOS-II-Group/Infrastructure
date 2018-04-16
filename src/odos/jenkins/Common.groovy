@@ -38,6 +38,7 @@ def buildContainer(String containerName){
       sh """
         docker login -u ${ODOS_USER} -p ${ODOS_PW} docker.lassiterdynamics.com:5000
         ./gradlew buildDocker
+        docker tag ${containerName}:latest docker.lassiterdynamics.com:5000/${containerName}:latest
         docker tag docker.lassiterdynamics.com:5000/${containerName}:latest docker.lassiterdynamics.com:5000/${containerName}:${BUILD_ID}
       """
   }
